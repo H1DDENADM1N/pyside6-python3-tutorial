@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>273</height>
+    <width>353</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,13 +17,13 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>10</y>
-      <width>261</width>
-      <height>201</height>
+      <x>9</x>
+      <y>9</y>
+      <width>331</width>
+      <height>531</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QComboBox" name="comboBox"/>
      </item>
@@ -31,7 +31,7 @@
       <widget class="QFontComboBox" name="fontComboBox"/>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="lineEdit"/>
      </item>
      <item>
       <widget class="QTextEdit" name="textEdit"/>
@@ -39,48 +39,40 @@
      <item>
       <widget class="QPlainTextEdit" name="plainTextEdit"/>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>10</y>
-      <width>331</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
+      <widget class="QSpinBox" name="spinBox"/>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+     </item>
+     <item>
+      <widget class="QTimeEdit" name="timeEdit"/>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="dateEdit"/>
+     </item>
+     <item>
+      <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+     </item>
+     <item>
+      <widget class="QDial" name="dial"/>
+     </item>
+     <item>
+      <widget class="QScrollBar" name="horizontalScrollBar">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>PushButton</string>
+      <widget class="QSlider" name="horizontalSlider">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
      </item>
     </layout>
    </widget>
@@ -90,8 +82,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>28</height>
+     <width>353</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -6,172 +6,58 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>283</height>
+    <width>334</width>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="formLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>50</y>
-      <width>291</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>序号：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>姓名：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>年龄：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_9"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>薪资：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_11"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_13"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_12"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_10"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>20</y>
-      <width>81</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>控件-&gt;布局</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>20</y>
-      <width>81</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>布局-&gt;控件</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>50</y>
-      <width>281</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="formLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>序号：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>姓名：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>年龄：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_5"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_4"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>薪资：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_6"/>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_remark">
+        <property name="text">
+         <string>备注：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit_remark"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_name">
+        <property name="text">
+         <string>姓名：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_name"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_salaries">
+        <property name="text">
+         <string>薪资：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_salaries"/>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>743</width>
-     <height>28</height>
+     <width>334</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
