@@ -108,6 +108,94 @@ class MyWindow(QWidget):
             self.ui.listWidget_List.sortItems(Qt.SortOrder.AscendingOrder)
         elif self.ui.radioButton_descending_order.isChecked():  # 降序
             self.ui.listWidget_List.sortItems(Qt.SortOrder.DescendingOrder)
+        elif self.ui.radioButton_max_order.isChecked():  # 大数优先
+            self.customSortOrderMax()
+        elif self.ui.radioButton_min_order.isChecked():  # 小数优先
+            self.customSortOrderMin()
+
+    # 大数优先
+    def customSortOrderMax(self):
+        # 初始化三个列表，分别用于整数、小数和字符串
+        int_list = []
+        float_list = []
+        string_list = []
+        # 遍历 QListWidget 中的所有项
+        for i in range(self.ui.listWidget_List.count()):
+            # 获取每一项
+            item = self.ui.listWidget_List.item(i)
+            if item is not None:
+                # 尝试将项的文本转换为整数
+                try:
+                    number = int(item.text())
+                    # 如果成功，添加到整数列表
+                    int_list.append(number)
+                except ValueError:
+                    # 如果转换失败，尝试将项的文本转换为小数
+                    try:
+                        number = float(item.text())
+                        # 如果成功，添加到小数列表
+                        float_list.append(number)
+                    except ValueError:
+                        # 如果转换失败，添加到字符串列表
+                        string_list.append(item.text())
+        # 对整数列表进行从大到小排序
+        sorted_int_list = sorted(int_list, reverse=True)
+        # 对小数列表进行从大到小排序
+        sorted_float_list = sorted(float_list, reverse=True)
+        # 合并排序后的整数列表和小数列表
+        merged_number_list = sorted_int_list + sorted_float_list
+        # 对合并后的列表进行从大到小排序
+        sorted_merged_number_list = sorted(merged_number_list, reverse=True)
+        # 对字符串列表进行排序
+        sorted_string_list = sorted(string_list, reverse=True, key=lambda s: s.lower())
+        # 将字符串列表添加到合并后的数字列表末尾
+        merged_list = sorted_merged_number_list + sorted_string_list
+        # 清空 QListWidget
+        self.ui.listWidget_List.clear()
+        # 将合并后的列表转换为字符串，并添加到 QListWidget 中
+        [self.ui.listWidget_List.addItem(str(item)) for item in merged_list]
+
+    # 小数优先
+    def customSortOrderMin(self):
+        # 初始化三个列表，分别用于整数、小数和字符串
+        int_list = []
+        float_list = []
+        string_list = []
+        # 遍历 QListWidget 中的所有项
+        for i in range(self.ui.listWidget_List.count()):
+            # 获取每一项
+            item = self.ui.listWidget_List.item(i)
+            if item is not None:
+                # 尝试将项的文本转换为整数
+                try:
+                    number = int(item.text())
+                    # 如果成功，添加到整数列表
+                    int_list.append(number)
+                except ValueError:
+                    # 如果转换失败，尝试将项的文本转换为小数
+                    try:
+                        number = float(item.text())
+                        # 如果成功，添加到小数列表
+                        float_list.append(number)
+                    except ValueError:
+                        # 如果转换失败，添加到字符串列表
+                        string_list.append(item.text())
+        # 对整数列表进行从小到大排序
+        sorted_int_list = sorted(int_list, reverse=False)
+        # 对小数列表进行从小到大排序
+        sorted_float_list = sorted(float_list, reverse=False)
+        # 合并排序后的整数列表和小数列表
+        merged_number_list = sorted_int_list + sorted_float_list
+        # 对合并后的列表进行从小到大排序
+        sorted_merged_number_list = sorted(merged_number_list, reverse=False)
+        # 对字符串列表进行排序
+        sorted_string_list = sorted(string_list, reverse=False, key=lambda s: s.lower())
+        # 将字符串列表添加到合并后的数字列表末尾
+        merged_list = sorted_merged_number_list + sorted_string_list
+        # 清空 QListWidget
+        self.ui.listWidget_List.clear()
+        # 将合并后的列表转换为字符串，并添加到 QListWidget 中
+        [self.ui.listWidget_List.addItem(str(item)) for item in merged_list]
 
     # 输出全部
     def print_all(self):

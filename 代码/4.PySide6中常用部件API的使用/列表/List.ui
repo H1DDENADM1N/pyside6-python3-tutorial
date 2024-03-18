@@ -188,6 +188,26 @@
                </widget>
               </item>
               <item>
+               <widget class="QRadioButton" name="radioButton_max_order">
+                <property name="text">
+                 <string>大数优先</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">buttonGroup</string>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="radioButton_min_order">
+                <property name="text">
+                 <string>小数优先</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">buttonGroup</string>
+                </attribute>
+               </widget>
+              </item>
+              <item>
                <spacer name="verticalSpacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>

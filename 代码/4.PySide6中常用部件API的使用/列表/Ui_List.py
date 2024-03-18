@@ -135,6 +135,18 @@ class Ui_Form_List(object):
 
         self.verticalLayout_4.addWidget(self.radioButton_descending_order)
 
+        self.radioButton_max_order = QRadioButton(self.groupBox_2)
+        self.buttonGroup.addButton(self.radioButton_max_order)
+        self.radioButton_max_order.setObjectName(u"radioButton_max_order")
+
+        self.verticalLayout_4.addWidget(self.radioButton_max_order)
+
+        self.radioButton_min_order = QRadioButton(self.groupBox_2)
+        self.buttonGroup.addButton(self.radioButton_min_order)
+        self.radioButton_min_order.setObjectName(u"radioButton_min_order")
+
+        self.verticalLayout_4.addWidget(self.radioButton_min_order)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_4.addItem(self.verticalSpacer)
@@ -691,6 +703,8 @@ class Ui_Form_List(object):
         self.label_2.setText(QCoreApplication.translate("Form_List", u"\u6392\u5e8f\u89c4\u5219", None))
         self.radioButton_ascending_order.setText(QCoreApplication.translate("Form_List", u"\u5347\u5e8f", None))
         self.radioButton_descending_order.setText(QCoreApplication.translate("Form_List", u"\u964d\u5e8f", None))
+        self.radioButton_max_order.setText(QCoreApplication.translate("Form_List", u"\u5927\u6570\u4f18\u5148", None))
+        self.radioButton_min_order.setText(QCoreApplication.translate("Form_List", u"\u5c0f\u6570\u4f18\u5148", None))
         self.pushButton_sort.setText(QCoreApplication.translate("Form_List", u"\u6392\u5e8f", None))
         self.groupBox.setTitle(QCoreApplication.translate("Form_List", u"\u63a7\u5236\u9009\u4e2d\u9879", None))
         self.pushButton_copy_current_item.setText(QCoreApplication.translate("Form_List", u"\u590d\u5236\u5185\u5bb9", None))
