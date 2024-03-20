@@ -1,11 +1,11 @@
 from Ui_TableView import Ui_TableView
 
 from PySide6.QtWidgets import ( QApplication, QWidget,
-                                QTableView, QHeaderView)
+                                QTableView, QHeaderView, QCompleter)
 from PySide6.QtGui import ( QAction, QDesktopServices,
                             QStandardItemModel, QStandardItem)
 from PySide6.QtCore import (    Qt, QUrl,
-                                QSortFilterProxyModel)
+                                QSortFilterProxyModel, QStringListModel)
 import re
 
 class MyWindow(QWidget):
@@ -39,6 +39,7 @@ class MyWindow(QWidget):
         # 设置 原模型 表头
         # self.model.setHorizontalHeaderLabels([letter for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'])
         self.setup_proxy_model()
+        self.setup_string_list_model()
 
     # 创建代理模型，保持源模型的纯净和可重用性
     def setup_proxy_model(self):
@@ -49,6 +50,16 @@ class MyWindow(QWidget):
         # 设置 代理模型 表头
         for i, letter in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
             self.sort_filter_proxy_model.setHeaderData(i, Qt.Horizontal, letter)
+
+    # 创建字符串列表模型
+    def setup_string_list_model(self):
+        self.string_list_model = QStringListModel()
+        # 设置补全器
+        self.completer = QCompleter(self.string_list_model, self)
+        self.completer.setCaseSensitivity(Qt.CaseInsensitive)  # 设置不区分大小写
+        # 将 QCompleter 设置到 QLineEdit
+        self.ui.lineEdit_data_filter.setCompleter(self.completer)
+
 
     '''
     -----------------------------------------------------------------------------------------------------------------------------------
@@ -91,6 +102,19 @@ class MyWindow(QWidget):
             # 如果编译成功，设置代理模型的过滤规则，使用 正则表达式 进行搜索 过滤
             self.sort_filter_proxy_model.setFilterRegularExpression(text)
             self.ui.label_data_filter.setText("数据过滤")  # 清除错误信息
+            # 添加过滤结果到字符串列表模型补全器
+            text_list = []
+            # 遍历代理模型的所有行和列
+            for row in range(self.sort_filter_proxy_model.rowCount()):
+                for column in range(self.sort_filter_proxy_model.columnCount()):
+                    # 获取模型索引
+                    index = self.sort_filter_proxy_model.index(row, column)
+                    # 获取单元格数据
+                    data = self.sort_filter_proxy_model.data(index)
+                    # 将数据添加到文本列表
+                    text_list.append(data)
+
+            self.string_list_model.setStringList(text_list)
         except re.error as e:
             # 如果编译失败，显示错误信息
             self.ui.label_data_filter.setText(f"正则表达式错误: {e}")
