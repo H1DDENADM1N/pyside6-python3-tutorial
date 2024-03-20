@@ -328,10 +328,15 @@ class MyWindow(QWidget):
         elif self.ui.radioButton_ignore_capltals.isChecked():  # 模糊匹配 忽略大小写
             items = self.ui.tableWidget.findItems(text, Qt.MatchFlag.MatchContains)
         elif self.ui.radioButton_regular_expression.isChecked():  # 正则匹配
-            if not re.compile(text):
-                self.ui.plainTextEdit_find_match.setPlainText(f"正则表达式{text}语法错误")
+            try:
+                # 尝试编译正则表达式来检查语法
+                re.compile(text)
+                # 如果编译成功，设置索引规则
+                items = self.ui.tableWidget.findItems(text, Qt.MatchFlag.MatchRegularExpression)
+            except re.error as e:
+                # 如果编译失败，显示错误信息
+                self.ui.plainTextEdit_find_match.setPlainText(f"正则表达式{text}语法错误{e}")
                 return
-            items = self.ui.tableWidget.findItems(text, Qt.MatchFlag.MatchRegularExpression)
         result_list = [[index, item.column(), item.text()] for index, item in enumerate(items)]
         if result_list:
             self.ui.plainTextEdit_find_match.setPlainText('\n'.join(map(str, result_list)))

@@ -305,7 +305,10 @@ class MyWindow(QWidget):
                 removed_list.append(i)
             self.ui.label_remove_by_content_result.setText(f"删除内容为{text}的元素的项（忽略大小写）成功，删除项索引为{removed_list}")
         elif self.ui.radioButton_regular_expression.isChecked():  # 正则匹配
-            if re.compile(text):
+            try:
+                # 尝试编译正则表达式来检查语法
+                re.compile(text)
+                # 如果编译成功，设置删除规则
                 targets = [i for i in range(self.ui.listWidget_List.count()) if re.match(text, self.ui.listWidget_List.item(i).text())]
                 removed_list =[]
                 # 从后向前删除，避免迭代时索引变化
@@ -316,8 +319,10 @@ class MyWindow(QWidget):
                     self.ui.label_remove_by_content_result.setText(f"删除内容匹配正则表达式{text}的元素成功，删除项索引为{removed_list}")
                 else:
                     self.ui.label_remove_by_content_result.setText(f"没有删除项，因为列表中没有内容匹配正则表达式{text}")
-            else:
-                self.ui.label_remove_by_content_result.setText(f"正则表达式{text}语法错误")
+            except re.error as e:
+                # 如果编译失败，显示错误信息
+                self.ui.label_remove_by_content_result.setText(f"正则表达式{text}语法错误{e}")
+                return
 
     # 清空列表全部内容
     def clear_list(self):
@@ -393,7 +398,10 @@ class MyWindow(QWidget):
             else:
                 self.ui.label_replace_by_content_result.setText(f"列表中没有内容为{text_old}（忽略大小写）的元素")
         elif self.ui.radioButton_regular_expression.isChecked():  # 正则表达式匹配
-            if re.compile(text_old):
+            try:
+                # 尝试编译正则表达式来检查语法
+                re.compile(text_old)
+                # 如果编译成功，设置替换规则
                 targets = [i for i in range(self.ui.listWidget_List.count()) if re.search(text_old, self.ui.listWidget_List.item(i).text())]
                 replaced_list = []
                 for i in targets:
@@ -403,9 +411,10 @@ class MyWindow(QWidget):
                     self.ui.label_replace_by_content_result.setText(f"成功将列表中所有匹配正则表达式{text_old}的元素替换为{text_new}，替换项索引为{replaced_list}")
                 else:
                     self.ui.label_replace_by_content_result.setText(f"列表中没有匹配正则表达式{text_old}的元素")
-            else:
-                self.ui.label_remove_by_content_result.setText(f"正则表达式{text_old}语法错误")
-
+            except re.error as e:
+                # 如果编译失败，显示错误信息
+                self.ui.label_replace_by_content_result.setText(f"正则表达式{text_old}语法错误{e}")
+                return
     # 依位置交换
     def change_position(self):
         position_1 = self.ui.spinBox_change_position_1.value()
@@ -466,8 +475,14 @@ class MyWindow(QWidget):
             items = self.ui.listWidget_List.findItems(text, Qt.MatchFlag.MatchContains)
         elif self.ui.radioButton_regular_expression.isChecked():  # 正则匹配
             items = self.ui.listWidget_List.findItems(text, Qt.MatchFlag.MatchRegularExpression)
-            if not re.compile(text):
-                self.ui.plainTextEdit_find_include.setPlainText(f"正则表达式{text}语法错误")
+            try:
+                # 尝试编译正则表达式来检查语法
+                re.compile(text)
+                # 如果编译成功，继续
+                pass
+            except re.error as e:
+                # 如果编译失败，显示错误信息
+                self.ui.plainTextEdit_find_include.setPlainText(f"正则表达式{text}语法错误{e}")
                 return
         position_list = [self.ui.listWidget_List.row(item) for item in items]
         if position_list:
