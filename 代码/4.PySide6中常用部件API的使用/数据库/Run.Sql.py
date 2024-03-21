@@ -41,6 +41,10 @@ class MyWindow(QWidget):
         super().__init__()
         self.ui = Ui_Sql()
         self.ui.setupUi(self)
+        self.ui.pushButton_add.setText('0 序号 index 格式错误')
+        self.ui.pushButton_add.setEnabled(False)
+        self.ui.pushButton_remove.setText('0 序号 index 格式错误')
+        self.ui.pushButton_remove.setEnabled(False)
         self.connect_db()  # 连接数据库
         self.setup_model()  # 设置模型
         self.setup_view()  # 设置视图
@@ -75,6 +79,9 @@ class MyWindow(QWidget):
         # self.model.setTable("user")  # 指定 user 表
         self.model.setTable("user_with_pinyin")  # 指定 user_with_pinyin 表
         self.model.select()
+        # 调用fetchMore()直到没有更多的数据可以加载
+        # while self.model.canFetchMore():
+        #     self.model.fetchMore()
 
         self.setup_proxy_model()
         self.setup_string_list_model()
@@ -144,6 +151,10 @@ class MyWindow(QWidget):
     def setup_signals(self):
         self.ui.lineEdit_data_filter.textChanged.connect(self.use_filter)
         self.ui.lineEdit_filter_range.textChanged.connect(self.set_filter_range)
+        self.ui.pushButton_add.clicked.connect(self.add_data)
+        self.ui.pushButton_remove.clicked.connect(self.remove_data)
+        self.ui.lineEdit_add_index.textChanged.connect(lambda: self.check_add_index(self.ui.lineEdit_add_index.text()))
+        self.ui.lineEdit_remove_index.textChanged.connect(lambda: self.check_remove_index(self.ui.lineEdit_remove_index.text()))
 
     def use_filter(self):
         text = self.ui.lineEdit_data_filter.text()
@@ -192,6 +203,109 @@ class MyWindow(QWidget):
         self.addAction(self.about)
         self.about.triggered.connect(lambda: QDesktopServices.openUrl(QUrl("https://github.com/H1DDENADM1N/pyside6-python3-tutorial")))
         # 给控件添加上下文菜单
+
+    # 增
+    def add_data(self):
+        index = int(self.ui.lineEdit_add_index.text())
+        name = self.ui.lineEdit_add_name.text()
+        address = self.ui.lineEdit_add_address.text()
+        email = self.ui.lineEdit_add_email.text()
+        name_pinyin = self.ui.lineEdit_add_name_pinyin.text()
+
+        # 加载全部数据，避免增加数据重复
+        while self.model.canFetchMore():
+            self.model.fetchMore()
+
+        # 检查索引是否已存在，存在则为修改数据
+        exist_index = set()
+        for i in range(self.model.rowCount()):
+            exist_index.add(self.model.index(i, 0).data())
+        if index in exist_index:
+            self.ui.pushButton_add.setText("索引已存在，执行修改数据")
+            self.modify_data(index, name, address, email, name_pinyin)
+            return
+
+        self.model.insertRow(index)
+        self.model.setData(self.model.index(index, 0), index)
+        self.model.setData(self.model.index(index, 1), name)
+        self.model.setData(self.model.index(index, 2), address)
+        self.model.setData(self.model.index(index, 3), email)
+        self.model.setData(self.model.index(index, 4), name_pinyin)
+        if not self.model.submitAll():
+            self.ui.pushButton_add.setText("提交失败: " + self.model.lastError().text())
+        else:
+            # 通知代理模型更新
+            self.sort_filter_proxy_model.invalidateFilter()
+
+    # 改
+    def modify_data(self, index, name, address, email, name_pinyin):
+        # 找到正确的行号
+        row = -1
+        for i in range(self.model.rowCount()):
+            if self.model.index(i, 0).data() == index:
+                row = i
+                break
+
+        if row != -1:
+            self.model.setData(self.model.index(row, 1), name)
+            self.model.setData(self.model.index(row, 2), address)
+            self.model.setData(self.model.index(row, 3), email)
+            self.model.setData(self.model.index(row, 4), name_pinyin)
+            if not self.model.submitAll():
+                self.ui.pushButton_modify.setText("提交失败: " + self.model.lastError().text())
+            else:
+                # 通知代理模型更新
+                self.sort_filter_proxy_model.invalidateFilter()
+
+
+
+    # 删
+    def remove_data(self):
+        index_to_remove = self.ui.lineEdit_remove_index.text()
+        try:
+            index_to_remove = int(index_to_remove)  # 将字符串转换为整数
+        except ValueError:
+            self.ui.pushButton_remove.setText("输入的索引不是有效的数字")
+            self.ui.pushButton_remove.setEnabled(False)
+            return
+
+        row_to_remove = None
+        for i in range(self.model.rowCount()):
+            if self.model.index(i, 0).data() == index_to_remove:
+                row_to_remove = i
+                break  # 找到匹配的行后立即中断循环
+
+        if row_to_remove is not None:
+            self.model.removeRow(row_to_remove)
+            if not self.model.submitAll():
+                self.ui.pushButton_remove.setText("提交失败: " + self.model.lastError().text())
+            else:
+                # 更新视图
+                self.sort_filter_proxy_model.invalidateFilter()
+        else:
+            self.ui.pushButton_remove.setText("没有找到匹配的索引")
+
+
+    def check_add_index(self, index):
+        # index 防非数字
+        try:
+            int(index)
+            self.ui.pushButton_add.setText("新增数据")
+            self.ui.pushButton_add.setEnabled(True)
+        except ValueError:
+            self.ui.pushButton_add.setText("0 序号 index 格式错误")
+            self.ui.pushButton_add.setEnabled(False)
+
+
+    def check_remove_index(self, index):
+        # index 防非数字
+        try:
+            int(index)
+            self.ui.pushButton_remove.setText("删除数据")
+            self.ui.pushButton_remove.setEnabled(True)
+        except ValueError:
+            self.ui.pushButton_remove.setText("0 序号 index 格式错误")
+            self.ui.pushButton_remove.setEnabled(False)
 
 
 
