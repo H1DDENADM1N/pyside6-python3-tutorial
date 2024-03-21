@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFormLayout, QGroupBox, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QPushButton,
-    QSizePolicy, QSpacerItem, QTableView, QVBoxLayout,
-    QWidget)
+    QHeaderView, QLabel, QLineEdit, QPlainTextEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QTableView,
+    QVBoxLayout, QWidget)
 
 class Ui_Sql(object):
     def setupUi(self, Sql):
@@ -76,6 +76,23 @@ class Ui_Sql(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.groupBox_4 = QGroupBox(Sql)
+        self.groupBox_4.setObjectName(u"groupBox_4")
+        self.verticalLayout_7 = QVBoxLayout(self.groupBox_4)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.pushButton_print_selected = QPushButton(self.groupBox_4)
+        self.pushButton_print_selected.setObjectName(u"pushButton_print_selected")
+
+        self.verticalLayout_7.addWidget(self.pushButton_print_selected)
+
+        self.plainTextEdit_print_selected = QPlainTextEdit(self.groupBox_4)
+        self.plainTextEdit_print_selected.setObjectName(u"plainTextEdit_print_selected")
+
+        self.verticalLayout_7.addWidget(self.plainTextEdit_print_selected)
+
+
+        self.verticalLayout_3.addWidget(self.groupBox_4)
+
         self.groupBox = QGroupBox(Sql)
         self.groupBox.setObjectName(u"groupBox")
         self.verticalLayout = QVBoxLayout(self.groupBox)
@@ -215,6 +232,8 @@ class Ui_Sql(object):
         self.label_filter_range.setText(QCoreApplication.translate("Sql", u"\u8fc7\u6ee4\u9002\u7528\u8303\u56f4\uff08\u5217\uff09", None))
         self.lineEdit_filter_range.setText(QCoreApplication.translate("Sql", u"1,2", None))
         self.label.setText(QCoreApplication.translate("Sql", u"\u6570\u636e\u5e93", None))
+        self.groupBox_4.setTitle(QCoreApplication.translate("Sql", u"\u8f93\u51fa\u9009\u4e2d\u9879", None))
+        self.pushButton_print_selected.setText(QCoreApplication.translate("Sql", u"\u8f93\u51fa\u9009\u4e2d\u9879", None))
         self.groupBox.setTitle(QCoreApplication.translate("Sql", u"\u589e", None))
         self.label_2.setText(QCoreApplication.translate("Sql", u"0 \u5e8f\u53f7 index", None))
         self.label_3.setText(QCoreApplication.translate("Sql", u"1 \u59d3\u540d name", None))

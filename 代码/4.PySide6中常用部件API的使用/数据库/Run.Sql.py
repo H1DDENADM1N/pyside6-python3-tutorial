@@ -149,12 +149,17 @@ class MyWindow(QWidget):
 
     # 连接信号/槽
     def setup_signals(self):
+        # 查
         self.ui.lineEdit_data_filter.textChanged.connect(self.use_filter)
         self.ui.lineEdit_filter_range.textChanged.connect(self.set_filter_range)
+        # 增 & 改
         self.ui.pushButton_add.clicked.connect(self.add_data)
-        self.ui.pushButton_remove.clicked.connect(self.remove_data)
         self.ui.lineEdit_add_index.textChanged.connect(lambda: self.check_add_index(self.ui.lineEdit_add_index.text()))
+        # 删
+        self.ui.pushButton_remove.clicked.connect(self.remove_data)
         self.ui.lineEdit_remove_index.textChanged.connect(lambda: self.check_remove_index(self.ui.lineEdit_remove_index.text()))
+        # 输出选中项
+        self.ui.pushButton_print_selected.clicked.connect(self.print_selected)
 
     def use_filter(self):
         text = self.ui.lineEdit_data_filter.text()
@@ -203,6 +208,16 @@ class MyWindow(QWidget):
         self.addAction(self.about)
         self.about.triggered.connect(lambda: QDesktopServices.openUrl(QUrl("https://github.com/H1DDENADM1N/pyside6-python3-tutorial")))
         # 给控件添加上下文菜单
+        # 复制
+        self.copy_current_item = QAction('复制')
+        self.ui.tableView.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
+        self.ui.tableView.addAction(self.copy_current_item)
+        self.copy_current_item.triggered.connect(self.copy_current_item_function)
+        # 删除
+        self.delete_current_item = QAction('删除')
+        self.ui.tableView.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
+        self.ui.tableView.addAction(self.delete_current_item)
+        self.delete_current_item.triggered.connect(self.delete_current_item_function)
 
     # 增
     def add_data(self):
@@ -307,6 +322,94 @@ class MyWindow(QWidget):
             self.ui.pushButton_remove.setText("0 序号 index 格式错误")
             self.ui.pushButton_remove.setEnabled(False)
 
+
+    '''
+    -----------------------------------------------------------------------------------------------------------------------------------
+    当前项
+    -----------------------------------------------------------------------------------------------------------------------------------
+    '''
+
+    # 复制当前项
+    def copy_current_item_function(self):
+        # 获取选中的单元格的索引
+        selected_indexes = self.ui.tableView.selectedIndexes()
+        if not selected_indexes:
+            return  # 如果没有选中任何单元格，直接返回
+
+        # 获取选中区域的起始和结束行
+        start_row = selected_indexes[0].row()
+        end_row = selected_indexes[-1].row()
+        # 使用列表推导式按行组织文本
+        rows_data = []
+        for row in range(start_row, end_row + 1):
+            # 获取当前行的所有选中单元格的文本
+            row_items = [self.ui.tableView.model().index(row, col).data() for col in range(self.ui.tableView.model().columnCount()) if self.ui.tableView.model().index(row, col) in selected_indexes]
+            # 将选中单元格的文本连接成字符串
+            row_text = ' '.join(map(str, row_items))
+            # 将当前行的文本添加到结果列表中
+            rows_data.append(row_text)
+        # 将最终的文本连接起来，并添加到剪贴板
+        QApplication.clipboard().setText('\n'.join(rows_data))
+
+
+
+    # 删除当前项
+    def delete_current_item_function(self):
+        # 获取选中的索引
+        selected_indexes = self.ui.tableView.selectedIndexes()
+        
+        # 创建一个列表来存储选中项第0列的数据
+        remove_target_list = []
+
+        # 遍历选中的索引
+        for index in selected_indexes:
+            # 检查列号是否为0
+            if index.column() == 0:
+                # 获取数据
+                data = self.ui.tableView.model().data(index)
+                # 添加到列表中
+                remove_target_list.append(data)
+        # 遍历列表
+        for row_to_remove in remove_target_list:
+            for i in range(self.model.rowCount()):
+                if self.model.index(i, 0).data() == row_to_remove:
+                    self.model.removeRow(i)
+                    if not self.model.submitAll():
+                        self.ui.pushButton_remove.setText("提交失败: " + self.model.lastError().text())
+                    else:
+                        # 更新视图
+                        print(f"{i} 删除成功")
+                        self.sort_filter_proxy_model.invalidateFilter()
+
+
+
+    # 输出选中项
+    def print_selected(self):
+        # 获取选中的索引
+        selected_indexes = self.ui.tableView.selectedIndexes()
+        
+        # 如果没有选中的索引，则设置文本为空
+        if not selected_indexes:
+            self.ui.plainTextEdit_print_selected.setPlainText("没有选中的项")
+            return
+
+        # 创建一个列表来存储选中的数据
+        selected_data = []
+
+        # 遍历选中的索引
+        for index in selected_indexes:
+            # 获取行号和列号
+            row = index.row()
+            column = index.column()
+            # 获取数据
+            data = self.ui.tableView.model().data(index)
+            # 添加到列表中
+            selected_data.append([row, column, data])
+
+        # 将列表转换为文本
+        text = '\n'.join(map(str, selected_data))
+        # 设置文本到控件中
+        self.ui.plainTextEdit_print_selected.setPlainText(text)
 
 
 
