@@ -106,4 +106,6 @@
 
 ### 数据库（QSqlTableModel）
 
+### 简易词典（ECDICT）
+
 ---
