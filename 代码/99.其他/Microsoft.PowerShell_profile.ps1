@@ -24,3 +24,6 @@ $ENV:FZF_DEFAULT_OPTS=@"
 # 类似软连接
 Set-Alias touch New-Item
 function ls {Color-List "-Exclude .*"}
+
+# 取代tracert
+Set-Alias -Name tracert -Value nexttrace -Option AllScope
